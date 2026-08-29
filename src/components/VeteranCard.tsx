@@ -1,5 +1,5 @@
 import React from 'react';
-import { Play, Music } from 'lucide-react';
+import { Play, Music, FileText } from 'lucide-react';
 import { Veteran } from '../types/veteran';
 
 interface VeteranCardProps {
@@ -8,6 +8,8 @@ interface VeteranCardProps {
 }
 
 export const VeteranCard: React.FC<VeteranCardProps> = ({ veteran, onSelect }) => {
+  const hasAudio = !!veteran.song.audioUrl;
+
   return (
     <article
       onClick={() => onSelect(veteran)}
@@ -20,7 +22,7 @@ export const VeteranCard: React.FC<VeteranCardProps> = ({ veteran, onSelect }) =
       tabIndex={0}
       role="button"
       aria-label={`View song card and story for ${veteran.rank} ${veteran.name}`}
-      className="vov-card rounded-xl overflow-hidden cursor-pointer flex flex-col group focus:outline-none focus:ring-2 focus:ring-amber-400 relative"
+      className="vov-card-interactive rounded-xl overflow-hidden cursor-pointer flex flex-col group focus:outline-none focus:ring-2 focus:ring-amber-400 relative"
     >
       {/* Portrait Image with Vignette */}
       <div className="aspect-[4/3.8] relative overflow-hidden bg-slate-950">
@@ -39,15 +41,25 @@ export const VeteranCard: React.FC<VeteranCardProps> = ({ veteran, onSelect }) =
 
         {/* Hover Audio Indicator Button */}
         <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <div className="w-9 h-9 rounded-full bg-vov-red text-white flex items-center justify-center shadow-lg shadow-black/60 transform group-hover:scale-110 transition-transform">
-            <Play className="w-4 h-4 fill-current translate-x-0.5" />
-          </div>
+          {hasAudio ? (
+            <div className="w-9 h-9 rounded-full bg-vov-red text-white flex items-center justify-center shadow-lg shadow-black/60 transform group-hover:scale-110 transition-transform">
+              <Play className="w-4 h-4 fill-current translate-x-0.5" />
+            </div>
+          ) : (
+            <div className="w-9 h-9 rounded-full bg-slate-900/90 text-amber-300 border border-amber-400/40 flex items-center justify-center shadow-lg shadow-black/60 transform group-hover:scale-110 transition-transform">
+              <FileText className="w-4 h-4" />
+            </div>
+          )}
         </div>
 
         {/* Hover song title pill */}
         <div className="absolute top-3 left-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-mono font-medium bg-black/80 text-amber-300 border border-amber-400/40 backdrop-blur-md shadow-md">
-            <Music className="w-3 h-3 text-amber-400" />
+            {hasAudio ? (
+              <Music className="w-3 h-3 text-amber-400" />
+            ) : (
+              <FileText className="w-3 h-3 text-amber-400" />
+            )}
             {veteran.song.title}
           </span>
         </div>

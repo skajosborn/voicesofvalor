@@ -130,7 +130,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onHomeClick, onNavigateSection }
       <Dialog.Root open={!!activeModal} onOpenChange={(open) => !open && setActiveModal(null)}>
         <Dialog.Portal>
           <Dialog.Overlay className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 animate-fade-in" />
-          <Dialog.Content className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] max-w-lg vov-card p-6 sm:p-8 rounded-2xl border border-amber-400/30 shadow-2xl z-50 focus:outline-none">
+          <Dialog.Content className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] max-w-lg bg-[#0f1926] p-6 sm:p-8 rounded-2xl border border-amber-400/30 shadow-2xl z-50 focus:outline-none">
             <div className="flex items-center justify-between pb-3 mb-4 border-b border-white/10">
               <Dialog.Title className="text-xl font-headline font-bold uppercase tracking-wider text-white">
                 {activeModal === 'about' && 'About Voices of Valor'}
@@ -159,8 +159,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onHomeClick, onNavigateSection }
                     strength of our nation’s veterans.
                   </p>
                   <p>
-                    Each event features a veteran who shares their story, which is then transformed
-                    into a song written and performed by talented Nashville songwriters.
+                    Each event features veterans who share their stories, which are then transformed
+                    into songs written and performed by talented Nashville songwriters, Johnny and Heidi Bulford.
                   </p>
                   <div className="p-3 bg-black/40 rounded-xl border border-white/10 text-xs font-mono text-amber-300">
                     ★ Real stories. Real heroes. Real impact.
@@ -176,8 +176,13 @@ export const Navbar: React.FC<NavbarProps> = ({ onHomeClick, onNavigateSection }
                     lives on through music and healing.
                   </p>
                   <p className="text-xs text-slate-400">
-                    To make a contribution or sponsor a veteran songwriting session, please reach out to
-                    Combat Veterans to Careers and CreatiVets.
+                    To make a contribution, sponsor a veteran songwriting session, or get support:{' '}
+                    <a
+                      href="mailto:info@combatveteranstocareers.org"
+                      className="text-amber-300 hover:underline font-semibold"
+                    >
+                      info@combatveteranstocareers.org
+                    </a>
                   </p>
                 </>
               )}
@@ -189,7 +194,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onHomeClick, onNavigateSection }
                     veterans across the United States Army, Navy, Air Force, and Marine Corps.
                   </p>
                   <p className="text-xs text-slate-400">
-                    For press and event inquiries: <span className="text-amber-300">info@voicesofvalor.org</span>
+                    For press and event inquiries: <span className="text-amber-300">info@combatveteranstocareers.org</span>
                   </p>
                 </>
               )}

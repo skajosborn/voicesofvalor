@@ -167,12 +167,14 @@ export const VeteranDetail: React.FC<VeteranDetailProps> = ({
 
         {/* Right Column: Audio Player & Visual Song Card / Lyrics */}
         <div className="lg:col-span-7 space-y-6">
-          {/* Audio Player Card with Background Synthesizer */}
-          <AudioPlayer
-            song={veteran.song}
-            autoPlay={true}
-            onTimeChange={handleTimeChange}
-          />
+          {/* Audio Player Card (rendered only when coordinating MP3 track is available) */}
+          {veteran.song.audioUrl && (
+            <AudioPlayer
+              song={veteran.song}
+              autoPlay={true}
+              onTimeChange={handleTimeChange}
+            />
+          )}
 
           {/* View Toggle Tabs if Songcard Graphic Exists */}
           {veteran.songcardUrl && (
@@ -208,14 +210,14 @@ export const VeteranDetail: React.FC<VeteranDetailProps> = ({
               <div className="mb-4 flex items-center justify-between pb-3 border-b border-slate-800">
                 <div className="text-left">
                   <h3 className="font-headline font-bold text-lg text-white uppercase tracking-wider">
-                    Official Song Card
+                    {veteran.song.title}
                   </h3>
                   <p className="text-xs font-sans text-slate-400">
-                    Stories written and performed with Nashville songwriters
+                    Written by {veteran.song.composer}
                   </p>
                 </div>
                 <span className="text-[11px] font-mono text-amber-300 bg-black/40 px-3 py-1 rounded border border-amber-400/20">
-                  Voices of Valor
+                  Official Song Card
                 </span>
               </div>
 

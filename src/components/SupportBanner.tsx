@@ -43,6 +43,15 @@ export const SupportBanner: React.FC = () => {
             Voices of Valor is made possible through the support of our community.
             Together, we can ensure that their stories are never forgotten and their legacy lives on.
           </p>
+          <p className="text-xs font-mono text-slate-300 pt-1">
+            Support & Sponsorship Inquiries:{' '}
+            <a
+              href="mailto:info@combatveteranstocareers.org"
+              className="text-amber-300 hover:underline font-semibold"
+            >
+              info@combatveteranstocareers.org
+            </a>
+          </p>
         </div>
 
         {/* Right: Line art hands cradling American flag heart */}

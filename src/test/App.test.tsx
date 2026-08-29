@@ -18,10 +18,21 @@ describe('Voices of Valor Memorial Application', () => {
     expect(screen.getByText(/COMMUNITY & HONOR/i)).toBeInTheDocument();
     expect(screen.getByText(/YOUR SUPPORT HONORS THEIR LEGACY/i)).toBeInTheDocument();
 
-    // Verify all 14 veterans from the roster are rendered in the gallery
+    // Verify all veterans from the roster are rendered in the gallery
     VETERANS_DATA.forEach((vet) => {
       expect(screen.getByText(vet.name)).toBeInTheDocument();
     });
+  });
+
+  it('navigates to Steve Large song card page with Monster In a Cage', () => {
+    render(<App />);
+
+    const steveCard = screen.getByLabelText(/View song card and story for 1st Sergeant Steve Large/i);
+    fireEvent.click(steveCard);
+
+    expect(screen.getByText('Monster In a Cage')).toBeInTheDocument();
+    expect(screen.getByAltText(/Song Card for Steve Large - Monster In a Cage/i)).toBeInTheDocument();
+    expect(screen.getByText(/Written by Steve Large, David Booth, Johnny Bulford, Heidi Bulford/i)).toBeInTheDocument();
   });
 
   it('filters veterans when searching by name or branch', () => {
@@ -34,20 +45,34 @@ describe('Voices of Valor Memorial Application', () => {
     expect(screen.queryByText('Dave Bliss')).not.toBeInTheDocument();
   });
 
-  it('clicking a veteran picture card navigates to their song card page with lyrics and audio player', () => {
+  it('clicking a veteran picture card with an MP3 navigates to their song card page with audio player', () => {
     render(<App />);
 
-    // Click John Bircher III card
+    // Click David Booth card (has Whats Next.mp3)
+    const davidCard = screen.getByLabelText(/View song card and story for Master Sergeant David Booth/i);
+    fireEvent.click(davidCard);
+
+    // Should now show the detail view
+    expect(screen.getAllByText("What's Next")[0]).toBeInTheDocument();
+    expect(screen.getByText(/Official Song Card/i)).toBeInTheDocument();
+
+    // Verify Audio Player controls exist for veterans with coordinating MP3
+    const playPauseBtn = screen.getByLabelText(/Pause song|Play song/i);
+    expect(playPauseBtn).toBeInTheDocument();
+  });
+
+  it('clicking a veteran without an MP3 displays their song card without audio player', () => {
+    render(<App />);
+
+    // Click John Bircher III card (no MP3 yet)
     const johnCard = screen.getByLabelText(/View song card and story for Colonel John Bircher III/i);
     fireEvent.click(johnCard);
 
-    // Should now show the detail view
     expect(screen.getByText('The Ballad of Johnny B')).toBeInTheDocument();
     expect(screen.getByText(/Official Song Card/i)).toBeInTheDocument();
 
-    // Verify Audio Player controls exist
-    const playPauseBtn = screen.getByLabelText(/Pause song|Play song/i);
-    expect(playPauseBtn).toBeInTheDocument();
+    // Verify Audio Player is not present
+    expect(screen.queryByLabelText(/Pause song|Play song/i)).not.toBeInTheDocument();
   });
 
   it('allows viewing interactive lyrics and jumping between verses by clicking on lyric lines', () => {
