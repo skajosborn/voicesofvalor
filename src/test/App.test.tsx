@@ -41,11 +41,11 @@ describe('Voices of Valor Memorial Application', () => {
     render(<App />);
 
     // Click John Bircher III card
-    const johnCard = screen.getByLabelText(/View song card and story for Sergeant First Class John Bircher III/i);
+    const johnCard = screen.getByLabelText(/View song card and story for Colonel John Bircher III/i);
     fireEvent.click(johnCard);
 
     // Should now show the detail view
-    expect(screen.getByText('Brothers on the Hill')).toBeInTheDocument();
+    expect(screen.getByText('The Ballad of Johnny B')).toBeInTheDocument();
     expect(screen.getByText(/Official Song Card/i)).toBeInTheDocument();
 
     // Verify Audio Player controls exist
@@ -57,29 +57,29 @@ describe('Voices of Valor Memorial Application', () => {
     render(<App />);
 
     // Navigate to John Bircher III
-    const johnCard = screen.getByLabelText(/View song card and story for Sergeant First Class John Bircher III/i);
+    const johnCard = screen.getByLabelText(/View song card and story for Colonel John Bircher III/i);
     fireEvent.click(johnCard);
 
     // Switch to lyrics tab
     const lyricsTabBtn = screen.getByRole('button', { name: /Interactive Lyrics/i });
     fireEvent.click(lyricsTabBtn);
 
-    // Click a chorus line
-    const chorusLine = screen.getByText(/And I still hear their laughter when the night turns still and deep,/i);
-    expect(chorusLine).toBeInTheDocument();
-    fireEvent.click(chorusLine);
+    // Click a distinct verse line
+    const verseLine = screen.getByText(/In my beret and Army greens/i);
+    expect(verseLine).toBeInTheDocument();
+    fireEvent.click(verseLine);
 
-    expect(chorusLine).toBeInTheDocument();
+    expect(verseLine).toBeInTheDocument();
   });
 
   it('navigates back to the main memorial roster when clicking the back button', () => {
     render(<App />);
 
-    // Navigate to detail
-    const johnCard = screen.getByLabelText(/View song card and story for Sergeant First Class John Bircher III/i);
+    // Navigate to John Bircher III
+    const johnCard = screen.getByLabelText(/View song card and story for Colonel John Bircher III/i);
     fireEvent.click(johnCard);
 
-    expect(screen.getByText('Brothers on the Hill')).toBeInTheDocument();
+    expect(screen.getByText('The Ballad of Johnny B')).toBeInTheDocument();
 
     // Click back button
     const backBtn = screen.getByLabelText(/Back to all veterans/i);

@@ -85,6 +85,13 @@ class AudioContextMock {
     };
   }
 
+  createMediaElementSource() {
+    return {
+      connect: () => {},
+      disconnect: () => {},
+    };
+  }
+
   createAnalyser() {
     return {
       fftSize: 512,
