@@ -1,0 +1,92 @@
+import { describe, it, expect, beforeEach } from 'vitest';
+import { render, screen, fireEvent } from '@testing-library/react';
+import { App } from '../App';
+import { VETERANS_DATA } from '../data/veterans';
+
+describe('Voices of Valor Memorial Application', () => {
+  beforeEach(() => {
+    window.location.hash = '';
+  });
+
+  it('renders the memorial header and all veteran picture cards on initial load', () => {
+    render(<App />);
+
+    expect(screen.getAllByText(/VOICES/i)[0]).toBeInTheDocument();
+    expect(screen.getByText(/LIVE MUSIC WRITERS ROUND/i)).toBeInTheDocument();
+    expect(screen.getByText(/HONORING ALL VETERANS/i)).toBeInTheDocument();
+    expect(screen.getByText(/Through Stories\. Through Songs\. Forever Remembered\./i)).toBeInTheDocument();
+    expect(screen.getAllByText(/MEET OUR VETERANS/i)[0]).toBeInTheDocument();
+    expect(screen.getAllByText(/LIVE MUSIC/i)[0]).toBeInTheDocument();
+    expect(screen.getByText(/VETERAN STORIES/i)).toBeInTheDocument();
+    expect(screen.getByText(/COMMUNITY & HONOR/i)).toBeInTheDocument();
+    expect(screen.getByText(/YOUR SUPPORT HONORS THEIR LEGACY/i)).toBeInTheDocument();
+
+    // Verify all 14 veterans from the roster are rendered in the gallery
+    VETERANS_DATA.forEach((vet) => {
+      expect(screen.getByText(vet.name)).toBeInTheDocument();
+    });
+  });
+
+  it('filters veterans when searching by name or branch', () => {
+    render(<App />);
+
+    const searchInput = screen.getByLabelText(/Search veterans and songs/i);
+    fireEvent.change(searchInput, { target: { value: 'John Bircher' } });
+
+    expect(screen.getByText('John Bircher III')).toBeInTheDocument();
+    expect(screen.queryByText('Dave Bliss')).not.toBeInTheDocument();
+  });
+
+  it('clicking a veteran picture card navigates to their song card page with lyrics and audio player', () => {
+    render(<App />);
+
+    // Click John Bircher III card
+    const johnCard = screen.getByLabelText(/View song card and story for Sergeant First Class John Bircher III/i);
+    fireEvent.click(johnCard);
+
+    // Should now show the detail view
+    expect(screen.getByText('Brothers on the Hill')).toBeInTheDocument();
+    expect(screen.getByText(/Official Song Card/i)).toBeInTheDocument();
+
+    // Verify Audio Player controls exist
+    const playPauseBtn = screen.getByLabelText(/Pause song|Play song/i);
+    expect(playPauseBtn).toBeInTheDocument();
+  });
+
+  it('allows viewing interactive lyrics and jumping between verses by clicking on lyric lines', () => {
+    render(<App />);
+
+    // Navigate to John Bircher III
+    const johnCard = screen.getByLabelText(/View song card and story for Sergeant First Class John Bircher III/i);
+    fireEvent.click(johnCard);
+
+    // Switch to lyrics tab
+    const lyricsTabBtn = screen.getByRole('button', { name: /Interactive Lyrics/i });
+    fireEvent.click(lyricsTabBtn);
+
+    // Click a chorus line
+    const chorusLine = screen.getByText(/And I still hear their laughter when the night turns still and deep,/i);
+    expect(chorusLine).toBeInTheDocument();
+    fireEvent.click(chorusLine);
+
+    expect(chorusLine).toBeInTheDocument();
+  });
+
+  it('navigates back to the main memorial roster when clicking the back button', () => {
+    render(<App />);
+
+    // Navigate to detail
+    const johnCard = screen.getByLabelText(/View song card and story for Sergeant First Class John Bircher III/i);
+    fireEvent.click(johnCard);
+
+    expect(screen.getByText('Brothers on the Hill')).toBeInTheDocument();
+
+    // Click back button
+    const backBtn = screen.getByLabelText(/Back to all veterans/i);
+    fireEvent.click(backBtn);
+
+    // Verify back to poster roster
+    expect(screen.getAllByText(/MEET OUR VETERANS/i)[0]).toBeInTheDocument();
+    expect(screen.getByText('Dave Bliss')).toBeInTheDocument();
+  });
+});

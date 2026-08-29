@@ -1,0 +1,148 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  body {
+    background-color: #0c1522;
+    color: #e2e8f0;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #080d14;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #1e2c3e;
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #8b1e1e;
+  }
+}
+
+/* Authentic Voices of Valor Hero Section with User Provided Photo Background */
+.vov-hero-container {
+  position: relative;
+  background-color: #0c1522;
+  background-image: url('/assets/voices-of-valor-hero-bg.png');
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+}
+
+/* Subtle overlay ensuring perfect readability while showcasing the authentic background */
+.vov-hero-overlay {
+  background: radial-gradient(circle at 50% 40%, rgba(220, 205, 175, 0.12) 0%, rgba(12, 21, 34, 0.35) 60%, rgba(8, 14, 22, 0.88) 100%);
+}
+
+/* Distressed Navy/Slate Headline Typography */
+.vov-hero-title {
+  font-family: 'Oswald', 'Bebas Neue', sans-serif;
+  color: #152b47;
+  letter-spacing: 0.04em;
+  text-shadow: 
+    0 1px 2px rgba(255, 255, 255, 0.4),
+    0 -1px 1px rgba(0, 0, 0, 0.7),
+    1px 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+/* Ribbon Banner below Voices of Valor */
+.vov-ribbon {
+  position: relative;
+  background: linear-gradient(180deg, #991f24 0%, #701418 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  border-top: 1px solid #b82d33;
+  border-bottom: 1px solid #4a0d10;
+}
+
+.vov-ribbon::before,
+.vov-ribbon::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 0;
+  height: 0;
+  border-style: solid;
+}
+
+.vov-ribbon::before {
+  left: -14px;
+  transform: translateY(-50%);
+  border-width: 14px 14px 14px 0;
+  border-color: transparent #701418 transparent transparent;
+}
+
+.vov-ribbon::after {
+  right: -14px;
+  transform: translateY(-50%);
+  border-width: 14px 0 14px 14px;
+  border-color: transparent transparent transparent #701418;
+}
+
+/* Script Subtitle */
+.vov-script-italic {
+  font-family: 'Georgia', 'Playball', serif;
+  font-style: italic;
+  letter-spacing: 0.02em;
+}
+
+/* Meet our veterans CTA button */
+.vov-btn-meet {
+  background: linear-gradient(180deg, #87191d 0%, #611013 100%);
+  border: 1.5px solid #a8262b;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  transition: all 0.25s ease;
+}
+
+.vov-btn-meet:hover {
+  background: linear-gradient(180deg, #9e1f24 0%, #731418 100%);
+  border-color: #d1363c;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.7), 0 0 14px rgba(168, 38, 43, 0.4);
+}
+
+/* Parchment Feature Strip */
+.vov-parchment-strip {
+  background-color: #e5dac6;
+  background-image: 
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.6) 0%, transparent 80%),
+    linear-gradient(rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.8), inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+  color: #1a202c;
+  border-radius: 4px;
+}
+
+/* Card framing */
+.vov-card {
+  background: #0f1926;
+  border: 1px solid #1f3044;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.vov-card:hover {
+  border-color: rgba(230, 183, 73, 0.6);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px -8px rgba(0, 0, 0, 0.7), 0 0 16px -2px rgba(230, 183, 73, 0.25);
+}
+
+/* Parchment footer */
+.vov-parchment-footer {
+  background-color: #ebe4d5;
+  background-image: 
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.4) 0%, transparent 80%),
+    linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+  color: #1f2937;
+}
