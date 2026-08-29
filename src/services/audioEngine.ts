@@ -1,6 +1,6 @@
 import { SongTrackData } from '../types/veteran';
 
-// Note frequencies map (Hz)
+// Note frequencies map (Hz) for procedural synth
 const NOTE_FREQS: Record<string, number> = {
   'C2': 65.41, 'D2': 73.42, 'E2': 82.41, 'F2': 87.31, 'G2': 98.00, 'A2': 110.00, 'B2': 123.47,
   'C3': 130.81, 'D3': 146.83, 'E3': 164.81, 'F3': 174.61, 'G3': 196.00, 'A3': 220.00, 'B3': 246.94,
@@ -22,7 +22,7 @@ const CHORD_NOTES: Record<string, string[]> = {
   'A': ['A2', 'C#4', 'E3', 'A3', 'C#5', 'E4'],
   'F#m': ['F#3', 'A3', 'C#4', 'F#4', 'A4'],
   'D': ['D3', 'F#3', 'A3', 'D4', 'F#4'],
-  'E': ['E2', 'G#3' in NOTE_FREQS ? 'G#3' : 'G3', 'B3', 'E4', 'B4'],
+  'E': ['E2', 'G3', 'B3', 'E4', 'B4'],
   'Em': ['E2', 'G3', 'B3', 'E4', 'G4', 'B4'],
   'G': ['G2', 'B2', 'D3', 'G3', 'B3', 'D4'],
   'Am': ['A2', 'C3', 'E3', 'A3', 'C4', 'E4'],
@@ -38,19 +38,18 @@ export class AudioEngine {
   private currentTrack: SongTrackData | null = null;
   private isPlaying = false;
   private isMuted = false;
-  private volume = 0.75;
+  private volume = 0.8;
   private playbackTime = 0;
   private duration = 180;
   private stepIndex = 0;
   private onTimeUpdate?: (time: number, isPlaying: boolean) => void;
   private activeOscillators: OscillatorNode[] = [];
   
-  // HTML5 Audio element for MP3 playback
+  // HTML5 Audio element for MP3 files
   private audioElement: HTMLAudioElement | null = null;
-  private mediaSourceNode: MediaElementAudioSourceNode | null = null;
 
   constructor() {
-    // Lazy initialization on user interaction
+    // Lazy initialization
   }
 
   private initContext(): AudioContext {
@@ -87,47 +86,44 @@ export class AudioEngine {
   public loadAndPlay(track: SongTrackData, autoPlay = true) {
     this.stop();
     this.currentTrack = track;
-    this.duration = track.durationSec;
+    this.duration = track.durationSec || 180;
     this.playbackTime = 0;
     this.stepIndex = 0;
 
     if (track.audioUrl) {
-      this.initAudioElement(track.audioUrl);
-    }
-
-    if (autoPlay) {
-      this.play();
+      this.initAudioElement(track.audioUrl, autoPlay);
+    } else {
+      if (autoPlay) {
+        this.play();
+      }
     }
   }
 
-  private initAudioElement(url: string) {
+  private initAudioElement(url: string, autoPlay: boolean) {
     if (this.audioElement) {
       this.audioElement.pause();
-      this.audioElement.src = '';
+      this.audioElement.removeAttribute('src');
+      this.audioElement.load();
+      this.audioElement = null;
     }
 
-    this.audioElement = new Audio();
-    this.audioElement.src = url;
-    this.audioElement.preload = 'auto';
-    this.audioElement.volume = this.isMuted ? 0 : this.volume;
+    const audio = new Audio();
+    audio.src = url;
+    audio.preload = 'auto';
+    audio.volume = this.isMuted ? 0 : this.volume;
+    this.audioElement = audio;
 
-    const ctx = this.initContext();
-    try {
-      if (ctx.createMediaElementSource) {
-        this.mediaSourceNode = ctx.createMediaElementSource(this.audioElement);
-        if (this.masterGain) {
-          this.mediaSourceNode.connect(this.masterGain);
-        }
+    audio.addEventListener('loadedmetadata', () => {
+      if (audio.duration && !isNaN(audio.duration) && isFinite(audio.duration)) {
+        this.duration = audio.duration;
       }
-    } catch {
-      // Direct playback fallback if MediaElementSource already attached
-    }
+    });
 
-    this.audioElement.addEventListener('timeupdate', () => {
-      if (this.audioElement && this.currentTrack?.audioUrl) {
-        this.playbackTime = this.audioElement.currentTime;
-        if (this.audioElement.duration && !isNaN(this.audioElement.duration)) {
-          this.duration = this.audioElement.duration;
+    audio.addEventListener('timeupdate', () => {
+      if (this.currentTrack?.audioUrl && this.audioElement === audio) {
+        this.playbackTime = audio.currentTime;
+        if (audio.duration && !isNaN(audio.duration) && isFinite(audio.duration)) {
+          this.duration = audio.duration;
         }
         if (this.onTimeUpdate) {
           this.onTimeUpdate(this.playbackTime, this.isPlaying);
@@ -135,25 +131,59 @@ export class AudioEngine {
       }
     });
 
-    this.audioElement.addEventListener('ended', () => {
-      this.playbackTime = 0;
-      this.isPlaying = false;
-      if (this.onTimeUpdate) {
-        this.onTimeUpdate(0, false);
+    audio.addEventListener('ended', () => {
+      if (this.audioElement === audio) {
+        this.playbackTime = 0;
+        this.isPlaying = false;
+        if (this.onTimeUpdate) {
+          this.onTimeUpdate(0, false);
+        }
       }
     });
+
+    audio.addEventListener('play', () => {
+      if (this.audioElement === audio) {
+        this.isPlaying = true;
+        if (this.onTimeUpdate) {
+          this.onTimeUpdate(this.playbackTime, true);
+        }
+      }
+    });
+
+    audio.addEventListener('pause', () => {
+      if (this.audioElement === audio) {
+        this.isPlaying = false;
+        if (this.onTimeUpdate) {
+          this.onTimeUpdate(this.playbackTime, false);
+        }
+      }
+    });
+
+    if (autoPlay) {
+      this.play();
+    }
   }
 
   public play() {
-    if (this.isPlaying) return;
-    const ctx = this.initContext();
     this.isPlaying = true;
 
     if (this.currentTrack?.audioUrl && this.audioElement) {
-      this.audioElement.play().catch(() => {});
-    } else {
+      this.audioElement.volume = this.isMuted ? 0 : this.volume;
+      const playPromise = this.audioElement.play();
+      if (playPromise !== undefined) {
+        playPromise.catch((err) => {
+          // Autoplay policy restriction - handled gracefully on user interaction
+          console.warn('Audio play request handled:', err);
+        });
+      }
+    } else if (this.currentTrack) {
       // Start procedural synthesizer loop
-      const stepIntervalMs = (60 / (this.currentTrack?.tempoBpm || 70)) * 500;
+      const ctx = this.initContext();
+      if (this.timerId !== null) {
+        clearInterval(this.timerId);
+      }
+      
+      const stepIntervalMs = (60 / (this.currentTrack.tempoBpm || 70)) * 500;
       
       this.timerId = window.setInterval(() => {
         if (!this.isPlaying || !this.currentTrack) return;
@@ -194,12 +224,18 @@ export class AudioEngine {
   }
 
   public stop() {
-    this.pause();
-    this.playbackTime = 0;
-    this.stepIndex = 0;
+    this.isPlaying = false;
+    if (this.timerId !== null) {
+      clearInterval(this.timerId);
+      this.timerId = null;
+    }
     if (this.audioElement) {
+      this.audioElement.pause();
       this.audioElement.currentTime = 0;
     }
+    this.stopActiveOscillators();
+    this.playbackTime = 0;
+    this.stepIndex = 0;
     if (this.onTimeUpdate) {
       this.onTimeUpdate(0, false);
     }
@@ -224,7 +260,7 @@ export class AudioEngine {
       this.audioElement.volume = this.isMuted ? 0 : this.volume;
     }
     if (this.masterGain && this.ctx) {
-      this.masterGain.gain.setTargetAtTime(this.isMuted ? 0 : this.volume, this.ctx.currentTime, 0.05);
+      this.masterGain.gain.setValueAtTime(this.isMuted ? 0 : this.volume, this.ctx.currentTime);
     }
   }
 
@@ -234,7 +270,7 @@ export class AudioEngine {
       this.audioElement.volume = this.isMuted ? 0 : this.volume;
     }
     if (this.masterGain && this.ctx) {
-      this.masterGain.gain.setTargetAtTime(this.isMuted ? 0 : this.volume, this.ctx.currentTime, 0.05);
+      this.masterGain.gain.setValueAtTime(this.isMuted ? 0 : this.volume, this.ctx.currentTime);
     }
     return this.isMuted;
   }

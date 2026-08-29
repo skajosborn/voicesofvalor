@@ -8,13 +8,10 @@ describe('Voices of Valor Memorial Application', () => {
     window.location.hash = '';
   });
 
-  it('renders the memorial header and all veteran picture cards on initial load', () => {
+  it('renders the memorial header banner and all veteran picture cards on initial load', () => {
     render(<App />);
 
-    expect(screen.getAllByText(/VOICES/i)[0]).toBeInTheDocument();
-    expect(screen.getByText(/LIVE MUSIC WRITERS ROUND/i)).toBeInTheDocument();
-    expect(screen.getByText(/HONORING ALL VETERANS/i)).toBeInTheDocument();
-    expect(screen.getByText(/Through Stories\. Through Songs\. Forever Remembered\./i)).toBeInTheDocument();
+    expect(screen.getByAltText(/Voices of Valor - Live Music Writers Round/i)).toBeInTheDocument();
     expect(screen.getAllByText(/MEET OUR VETERANS/i)[0]).toBeInTheDocument();
     expect(screen.getAllByText(/LIVE MUSIC/i)[0]).toBeInTheDocument();
     expect(screen.getByText(/VETERAN STORIES/i)).toBeInTheDocument();

@@ -25,93 +25,41 @@ export const MemorialHeader: React.FC<MemorialHeaderProps> = ({
 
   return (
     <div className="relative">
-      {/* Hero Section Container with User Provided Graphic Backdrop */}
-      <section className="vov-hero-container flex flex-col justify-between pt-6 sm:pt-10 pb-8 px-4 sm:px-6">
-        <div className="vov-hero-overlay absolute inset-0 pointer-events-none" />
-
-        {/* Center Hero Content */}
-        <div className="relative max-w-3xl mx-auto text-center z-10 my-auto py-8">
-          
-          {/* Top 3 Stars with Flanking Navy Lines */}
-          <div className="flex items-center justify-center gap-3 sm:gap-4 mb-2 select-none">
-            <span className="w-12 sm:w-20 h-[1.5px] bg-[#1c3554] opacity-90"></span>
-            <span className="text-[#1c3554] text-base sm:text-lg">★</span>
-            <span className="text-[#87191d] text-2xl sm:text-3xl font-bold -translate-y-0.5">★</span>
-            <span className="text-[#1c3554] text-base sm:text-lg">★</span>
-            <span className="w-12 sm:w-20 h-[1.5px] bg-[#1c3554] opacity-90"></span>
-          </div>
-
-          {/* Main Title: VOICES OF VALOR */}
-          <div className="space-y-0 leading-none select-none mb-3">
-            <h1 className="text-6xl sm:text-8xl md:text-9xl font-headline font-extrabold uppercase tracking-tight text-[#152a45] drop-shadow-sm">
-              VOICES
-            </h1>
-            <h2 className="text-5xl sm:text-7xl md:text-8xl font-headline font-extrabold uppercase tracking-tight text-[#152a45] drop-shadow-sm">
-              OF VALOR
-            </h2>
-          </div>
-
-          {/* Burgundy Ribbon: LIVE MUSIC WRITERS ROUND */}
-          <div className="inline-block relative my-3 px-8 sm:px-12 py-1.5 sm:py-2 vov-ribbon rounded-sm select-none">
-            <div className="flex items-center justify-center gap-3 font-headline font-bold text-xs sm:text-sm tracking-[0.25em] uppercase text-white shadow-sm">
-              <span className="text-amber-300 text-xs">★</span>
-              <span>LIVE MUSIC WRITERS ROUND</span>
-              <span className="text-amber-300 text-xs">★</span>
-            </div>
-          </div>
-
-          {/* Subheading: HONORING ALL VETERANS */}
-          <div className="mt-3 select-none">
-            <h3 className="font-headline font-bold text-base sm:text-xl md:text-2xl tracking-[0.15em] text-[#1c3554] uppercase">
-              HONORING ALL VETERANS
-            </h3>
-            <p className="vov-script-italic text-sm sm:text-base md:text-lg text-[#2d486b] font-medium mt-0.5">
-              Through Stories. Through Songs. Forever Remembered.
-            </p>
-          </div>
-
-          {/* Red Star Divider */}
-          <div className="text-vov-red text-base sm:text-lg my-3 select-none">
-            ★
-          </div>
-
-          {/* Description Paragraph */}
-          <p className="text-xs sm:text-sm md:text-base text-[#1e293b] max-w-xl mx-auto font-sans leading-relaxed font-medium mb-3 px-2">
-            Voices of Valor is a live music storytelling series that honors the courage, sacrifice,
-            and strength of our nation’s veterans. Each event features a veteran who shares their story,
-            which is then transformed into a song written and performed by talented Nashville songwriters.
-          </p>
-
-          {/* Tagline */}
-          <p className="font-headline font-bold text-sm sm:text-base text-[#87191d] tracking-wider mb-6">
-            Real Stories. Real Heroes. Real Impact.
-          </p>
-
-          {/* Meet Our Veterans Button */}
-          <div className="flex flex-col items-center justify-center gap-2">
-            <button
-              onClick={handleScrollToVeterans}
-              className="vov-btn-meet px-8 sm:px-10 py-2.5 sm:py-3 rounded-md text-white font-headline font-bold text-sm sm:text-base tracking-widest uppercase flex items-center gap-2 cursor-pointer"
-            >
-              <span className="text-amber-300 text-xs">★</span>
-              <span>MEET OUR VETERANS</span>
-              <span className="text-amber-300 text-xs">★</span>
-            </button>
-
-            {/* Downward Chevron Arrow */}
-            <button
-              onClick={handleScrollToVeterans}
-              className="text-vov-redBright hover:text-red-400 transition-transform hover:translate-y-1 mt-1 p-1"
-              aria-label="Scroll down to veterans"
-            >
-              <ChevronDown className="w-6 h-6 animate-bounce" />
-            </button>
+      {/* Hero Banner Section using high-resolution newVVhero image */}
+      <section className="relative w-full overflow-hidden bg-[#0a1017]">
+        <div className="max-w-7xl mx-auto px-2 sm:px-4 pt-2 sm:pt-4">
+          <div className="relative w-full rounded-2xl overflow-hidden shadow-2xl border border-white/10">
+            <img
+              src="/assets/newVVhero.png"
+              alt="Voices of Valor - Live Music Writers Round Honoring All Veterans featuring Johnny & Heidi Bulford"
+              className="w-full h-auto object-contain block"
+            />
           </div>
         </div>
 
-        {/* Parchment 3-Feature Bar at Bottom of Hero */}
-        <div className="relative max-w-5xl mx-auto w-full z-10 mt-6">
-          <div className="vov-parchment-strip p-4 sm:p-6 grid grid-cols-1 md:grid-cols-3 gap-6 text-slate-900 border border-amber-900/20 shadow-xl">
+        {/* CTA Bar right below the banner */}
+        <div className="flex flex-col items-center justify-center pt-6 pb-2">
+          <button
+            onClick={handleScrollToVeterans}
+            className="vov-btn-meet px-8 sm:px-10 py-2.5 sm:py-3 rounded-md text-white font-headline font-bold text-sm sm:text-base tracking-widest uppercase flex items-center gap-2 cursor-pointer shadow-xl hover:scale-105 transition-all"
+          >
+            <span className="text-amber-300 text-xs">★</span>
+            <span>MEET OUR VETERANS</span>
+            <span className="text-amber-300 text-xs">★</span>
+          </button>
+
+          <button
+            onClick={handleScrollToVeterans}
+            className="text-vov-redBright hover:text-red-400 transition-transform hover:translate-y-1 mt-2 p-1"
+            aria-label="Scroll down to veterans"
+          >
+            <ChevronDown className="w-6 h-6 animate-bounce" />
+          </button>
+        </div>
+
+        {/* Parchment 3-Feature Bar */}
+        <div className="max-w-5xl mx-auto w-full px-4 sm:px-6 pt-4 pb-6">
+          <div className="vov-parchment-strip p-4 sm:p-6 grid grid-cols-1 md:grid-cols-3 gap-6 text-slate-900 border border-amber-900/20 shadow-xl rounded-lg">
             
             {/* 1. Live Music */}
             <div className="flex items-center gap-3 sm:gap-4">
@@ -163,7 +111,7 @@ export const MemorialHeader: React.FC<MemorialHeaderProps> = ({
       </section>
 
       {/* Meet Our Veterans Gallery Anchor Section */}
-      <section id="meet-veterans-section" className="max-w-6xl mx-auto px-4 sm:px-6 pt-16 pb-6 text-center">
+      <section id="meet-veterans-section" className="max-w-6xl mx-auto px-4 sm:px-6 pt-10 pb-6 text-center">
         {/* Section Heading: ── MEET OUR VETERANS ── */}
         <div className="flex items-center justify-center gap-4 max-w-2xl mx-auto mb-2 select-none">
           <div className="h-[2px] bg-vov-red flex-1" />

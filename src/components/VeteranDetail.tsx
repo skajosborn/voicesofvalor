@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { ArrowLeft, Award, MapPin, Calendar, Shield, ChevronLeft, ChevronRight, Music, Image as ImageIcon, FileText } from 'lucide-react';
 import { Veteran } from '../types/veteran';
 import { AudioPlayer } from './AudioPlayer';
@@ -19,6 +19,10 @@ export const VeteranDetail: React.FC<VeteranDetailProps> = ({
 }) => {
   const [currentTime, setCurrentTime] = useState(0);
   const [activeTab, setActiveTab] = useState<'card' | 'lyrics'>(veteran.songcardUrl ? 'card' : 'lyrics');
+
+  const handleTimeChange = useCallback((time: number) => {
+    setCurrentTime(time);
+  }, []);
 
   const currentIndex = allVeterans.findIndex((v) => v.id === veteran.id);
   const prevVeteran = currentIndex > 0 ? allVeterans[currentIndex - 1] : allVeterans[allVeterans.length - 1];
@@ -167,7 +171,7 @@ export const VeteranDetail: React.FC<VeteranDetailProps> = ({
           <AudioPlayer
             song={veteran.song}
             autoPlay={true}
-            onTimeChange={(time) => setCurrentTime(time)}
+            onTimeChange={handleTimeChange}
           />
 
           {/* View Toggle Tabs if Songcard Graphic Exists */}
