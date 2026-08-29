@@ -8,7 +8,7 @@ export const VETERANS_DATA: Veteran[] = [
     rank: 'Master Sergeant',
     branch: 'Army',
     serviceEra: 'Operation Iraqi Freedom & Global War on Terror',
-    yearsOfService: '2004 – 2012',
+    yearsOfService: '1992 – 2012',
     hometown: 'Nashville, Tennessee',
     imageUrl: '/assets/veterans/DavidBooth.png',
     imageAlt: 'Veteran David Booth in front of American Flag',

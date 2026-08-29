@@ -119,4 +119,23 @@ describe('Voices of Valor Memorial Application', () => {
     expect(screen.getAllByText(/MEET OUR VETERANS/i)[0]).toBeInTheDocument();
     expect(screen.getByText('Dave Bliss')).toBeInTheDocument();
   });
+
+  it('toggles the mobile navigation menu and opens dialog modals from mobile links', () => {
+    render(<App />);
+
+    const menuToggle = screen.getByLabelText(/Open navigation menu/i);
+    expect(menuToggle).toBeInTheDocument();
+
+    // Open mobile menu
+    fireEvent.click(menuToggle);
+    expect(screen.getByLabelText(/Close navigation menu/i)).toBeInTheDocument();
+
+    // Click ABOUT in mobile menu
+    const aboutButtons = screen.getAllByRole('button', { name: /ABOUT/i });
+    const mobileAbout = aboutButtons[aboutButtons.length - 1];
+    fireEvent.click(mobileAbout);
+
+    // Verify dialog opens
+    expect(screen.getByText(/About Voices of Valor/i)).toBeInTheDocument();
+  });
 });
