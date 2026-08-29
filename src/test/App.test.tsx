@@ -18,10 +18,18 @@ describe('Voices of Valor Memorial Application', () => {
     expect(screen.getByText(/COMMUNITY & HONOR/i)).toBeInTheDocument();
     expect(screen.getByText(/YOUR SUPPORT HONORS THEIR LEGACY/i)).toBeInTheDocument();
 
-    // Verify all veterans from the roster are rendered in the gallery
-    VETERANS_DATA.forEach((vet) => {
-      expect(screen.getByText(vet.name)).toBeInTheDocument();
-    });
+    // Verify all veterans from the roster are rendered in the gallery in custom order
+    const renderedNames = screen.getAllByRole('heading', { level: 3 }).map((el) => el.textContent);
+    const expectedNames = VETERANS_DATA.map((vet) => vet.name);
+    expect(renderedNames.slice(0, expectedNames.length)).toEqual(expectedNames);
+    expect(expectedNames[0]).toBe('David Booth');
+    expect(expectedNames[1]).toBe('Mike Chesne');
+    expect(expectedNames[2]).toBe('Rob Bollinger');
+    expect(expectedNames[3]).toBe('Irving Locker');
+    expect(expectedNames[4]).toBe('Louis Nicosia');
+    expect(expectedNames[5]).toBe('Kevin McCabe');
+    expect(expectedNames[6]).toBe('Ken Rubin');
+    expect(expectedNames[7]).toBe('Kris Hasenauer');
   });
 
   it('navigates to Steve Large song card page with Monster In a Cage', () => {
