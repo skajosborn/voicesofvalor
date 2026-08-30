@@ -276,11 +276,51 @@ export const Navbar: React.FC<NavbarProps> = ({ onHomeClick, onNavigateSection }
                   </>
                 )}
 
-                {(activeModal === 'events' || activeModal === 'gallery' || activeModal === 'contact') && (
+                {activeModal === 'contact' && (
+                  <>
+                    <p>
+                      <strong>Voices of Valor</strong> proudly welcomes and serves veterans, active duty service members, and military families across <strong>all branches of the United States Armed Forces</strong>:
+                    </p>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 my-2 font-headline uppercase tracking-wider text-xs">
+                      <div className="px-3 py-2 rounded-lg bg-black/40 border border-white/10 text-center text-amber-300 font-bold flex items-center justify-center gap-1.5 shadow-sm">
+                        <span className="text-vov-redBright text-[10px]">★</span> Army
+                      </div>
+                      <div className="px-3 py-2 rounded-lg bg-black/40 border border-white/10 text-center text-amber-300 font-bold flex items-center justify-center gap-1.5 shadow-sm">
+                        <span className="text-vov-redBright text-[10px]">★</span> Marine Corps
+                      </div>
+                      <div className="px-3 py-2 rounded-lg bg-black/40 border border-white/10 text-center text-amber-300 font-bold flex items-center justify-center gap-1.5 shadow-sm">
+                        <span className="text-vov-redBright text-[10px]">★</span> Navy
+                      </div>
+                      <div className="px-3 py-2 rounded-lg bg-black/40 border border-white/10 text-center text-amber-300 font-bold flex items-center justify-center gap-1.5 shadow-sm">
+                        <span className="text-vov-redBright text-[10px]">★</span> Air Force
+                      </div>
+                      <div className="px-3 py-2 rounded-lg bg-black/40 border border-white/10 text-center text-amber-300 font-bold flex items-center justify-center gap-1.5 shadow-sm">
+                        <span className="text-vov-redBright text-[10px]">★</span> Space Force
+                      </div>
+                      <div className="px-3 py-2 rounded-lg bg-black/40 border border-white/10 text-center text-amber-300 font-bold flex items-center justify-center gap-1.5 shadow-sm">
+                        <span className="text-vov-redBright text-[10px]">★</span> Coast Guard
+                      </div>
+                    </div>
+                    <p>
+                      Whether you are a veteran interested in participating in our songwriting sessions, an organization seeking to host a live event, or a community sponsor, we would love to connect with you.
+                    </p>
+                    <div className="p-3 bg-amber-950/40 rounded-xl border border-amber-500/20 text-xs">
+                      <span className="text-slate-300">General, Veteran & Sponsorship Inquiries:</span>{' '}
+                      <a
+                        href="mailto:info@combatveteranstocareers.org"
+                        className="text-amber-300 hover:underline font-semibold block sm:inline mt-1 sm:mt-0 font-mono"
+                      >
+                        info@combatveteranstocareers.org
+                      </a>
+                    </div>
+                  </>
+                )}
+
+                {(activeModal === 'events' || activeModal === 'gallery') && (
                   <>
                     <p>
                       Explore our featured roster below to experience songs and lyrics created directly with
-                      veterans across the United States Army, Navy, Air Force, and Marine Corps.
+                      veterans across the United States Army, Marine Corps, Navy, Air Force, Space Force, and Coast Guard.
                     </p>
                     <p className="text-xs text-slate-400">
                       For press and event inquiries: <span className="text-amber-300">info@combatveteranstocareers.org</span>

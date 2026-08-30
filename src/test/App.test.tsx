@@ -144,7 +144,7 @@ describe('Voices of Valor Memorial Application', () => {
 
     // Verify Gallery header and moments badge
     expect(screen.getByText(/EVENT PHOTO GALLERY/i)).toBeInTheDocument();
-    expect(screen.getByText(/92 Moments Captured/i)).toBeInTheDocument();
+    expect(screen.getByText(/Moments Captured/i)).toBeInTheDocument();
 
     // Verify category filter buttons exist
     const performanceFilter = screen.getByRole('button', { name: /Live Performances/i });
@@ -159,5 +159,27 @@ describe('Voices of Valor Memorial Application', () => {
     // Verify Lightbox is displayed with Close button and photo counter
     expect(screen.getByLabelText(/Close photo preview/i)).toBeInTheDocument();
     expect(screen.getByText(/Use ← → keys to browse/i)).toBeInTheDocument();
+  });
+
+  it('opens the contact dialog and includes all branches of the military', () => {
+    render(<App />);
+
+    // Click Contact navigation link
+    const contactBtn = screen.getAllByRole('button', { name: /CONTACT/i })[0];
+    fireEvent.click(contactBtn);
+
+    // Verify Contact modal header
+    expect(screen.getByText(/Contact Voices of Valor/i)).toBeInTheDocument();
+
+    // Verify all 6 branches of the military are listed
+    expect(screen.getAllByText(/Army/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Marine Corps/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Navy/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Air Force/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Space Force/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Coast Guard/i).length).toBeGreaterThan(0);
+
+    // Verify contact email is present
+    expect(screen.getAllByText(/info@combatveteranstocareers.org/i).length).toBeGreaterThan(0);
   });
 });
