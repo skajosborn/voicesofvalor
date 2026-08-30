@@ -26,11 +26,18 @@ export const Navbar: React.FC<NavbarProps> = ({ onHomeClick, onNavigateSection }
       setActiveModal('about');
     } else if (target === 'support') {
       setActiveModal('support');
-    } else if (target === 'events' || target === 'gallery' || target === 'contact') {
+    } else if (target === 'contact') {
+      setActiveModal('contact');
+    } else if (target === 'events' || target === 'gallery') {
       if (onNavigateSection) {
         onNavigateSection(target);
       } else {
-        setActiveModal(target);
+        const el = document.getElementById('photo-gallery-section');
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth' });
+        } else {
+          setActiveModal(target);
+        }
       }
     }
   };

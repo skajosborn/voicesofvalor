@@ -30,7 +30,7 @@ export interface Veteran {
   branch: 'Army' | 'Navy' | 'Air Force' | 'Marine Corps' | 'Coast Guard' | 'Space Force';
   serviceEra: string;
   yearsOfService: string;
-  hometown: string;
+  hometown?: string;
   imageUrl: string;
   imageAlt: string;
   songcardUrl?: string;

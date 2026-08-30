@@ -1,0 +1,117 @@
+export interface GalleryPhoto {
+  id: string;
+  src: string;
+  filename: string;
+  alt: string;
+  caption: string;
+  category: 'performance' | 'veterans' | 'community';
+}
+
+const RAW_IMAGE_FILES = [
+  'IMG_2925.jpeg',
+  'IMG_2926.jpeg',
+  'IMG_2927.jpeg',
+  'IMG_2928.jpeg',
+  'IMG_2929.jpeg',
+  'Facetune_27-07-2026-18-26-13.jpeg',
+  'IMG_2724.jpeg',
+  'IMG_2729.jpeg',
+  'IMG_2733.jpeg',
+  'IMG_2735.jpeg',
+  'IMG_2736.jpeg',
+  'IMG_2755.jpeg',
+  'IMG_2930.jpeg',
+  'IMG_2931.jpeg',
+  'IMG_2932.jpeg',
+  'IMG_2933.jpeg',
+  'IMG_2979.jpeg',
+  'IMG_3458.jpeg',
+  'IMG_3460.jpeg',
+  'IMG_3461.jpeg',
+  'IMG_3462.jpeg',
+  'IMG_3464.jpeg',
+  'IMG_3469.jpeg',
+  'IMG_3471.jpeg',
+  'IMG_3474.jpeg',
+  'IMG_3475.jpeg',
+  'IMG_3476.jpeg',
+  'IMG_3479.jpeg',
+  'IMG_3484.jpeg',
+  'IMG_3486.jpeg',
+  'IMG_3487.jpeg',
+  'IMG_3488.jpeg',
+  'IMG_3489.jpeg',
+  'IMG_3490.jpeg',
+  'IMG_5029.jpeg',
+  'IMG_5815.jpeg',
+  'IMG_5818.jpeg',
+  'IMG_5823.jpeg',
+  'IMG_5834.jpeg',
+  'IMG_5846.jpeg',
+  'IMG_5852.jpeg',
+  'IMG_5853.jpeg',
+  'IMG_5863.jpeg',
+  'IMG_9825.jpeg',
+  'IMG_9827.jpeg',
+  'IMG_9828.jpeg',
+  'IMG_9848.jpeg',
+  'IMG_9850.jpeg',
+  'IMG_9853.jpeg',
+  'IMG_9863.jpeg',
+  'IMG_9869.jpeg',
+  'IMG_9874.jpeg',
+  'IMG_9877.jpeg',
+  'IMG_9885.jpeg',
+  'IMG_9886.jpeg',
+  'IMG_9889.jpeg',
+  'IMG_9891.jpeg',
+  'IMG_9894.jpeg',
+  'IMG_9895.jpeg',
+  'IMG_9899.jpeg',
+  'IMG_9901.jpeg',
+  'IMG_9904.jpeg',
+  'IMG_9906.jpeg',
+  'IMG_9908.jpeg',
+  'IMG_9916.jpeg',
+  'IMG_9924.jpeg',
+  'IMG_9927.jpeg',
+  'IMG_9930.jpeg',
+  'IMG_9932.jpeg',
+  'IMG_9933.jpeg',
+  'IMG_9935.jpeg',
+  'IMG_9936.jpeg',
+  'IMG_9938.jpeg',
+  'IMG_9940.jpeg',
+  'IMG_9943.jpeg',
+  'IMG_9944.jpeg',
+  'IMG_9946.jpeg',
+  'IMG_9948.jpeg',
+  'IMG_9954.jpeg',
+  'IMG_9980.jpeg',
+  'IMG_9981.jpeg',
+  'IMG_9982.jpeg',
+  'IMG_9983.jpeg',
+  'IMG_9987.jpeg',
+  'IMG_9988.jpeg',
+  'IMG_9990.jpeg',
+  'IMG_9997.jpeg',
+  'IMG_9998.jpeg',
+  'IMG_9999.jpeg',
+];
+
+export const GALLERY_PHOTOS: GalleryPhoto[] = RAW_IMAGE_FILES.map((filename, index) => {
+  const num = index + 1;
+  let category: 'performance' | 'veterans' | 'community' = 'performance';
+  if (num % 3 === 0) category = 'veterans';
+  else if (num % 3 === 1) category = 'performance';
+  else category = 'community';
+
+  return {
+    id: `vov-photo-${index + 1}`,
+    filename,
+    src: `/assets/images/${filename}`,
+    alt: `Voices of Valor Live Event & Writers Round - Photo ${index + 1}`,
+    caption: `Voices of Valor Live Writers Round — Honoring our veterans through music, storytelling, and community.`,
+    category,
+  };
+});

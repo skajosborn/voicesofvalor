@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { ArrowLeft, Award, MapPin, Calendar, Shield, ChevronLeft, ChevronRight, Music, Image as ImageIcon, FileText } from 'lucide-react';
+import { ArrowLeft, Award, Calendar, Shield, ChevronLeft, ChevronRight, Music, Image as ImageIcon, FileText } from 'lucide-react';
 import { Veteran } from '../types/veteran';
 import { AudioPlayer } from './AudioPlayer';
 import { LyricsCard } from './LyricsCard';
@@ -118,10 +118,7 @@ export const VeteranDetail: React.FC<VeteranDetailProps> = ({
                     {veteran.yearsOfService}
                   </span>
                   <span>•</span>
-                  <span className="inline-flex items-center gap-1">
-                    <MapPin className="w-3 h-3 text-amber-400/80" />
-                    {veteran.hometown}
-                  </span>
+                  <span>{veteran.serviceEra}</span>
                 </p>
               </div>
             </div>

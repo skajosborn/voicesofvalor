@@ -138,4 +138,26 @@ describe('Voices of Valor Memorial Application', () => {
     // Verify dialog opens
     expect(screen.getByText(/About Voices of Valor/i)).toBeInTheDocument();
   });
+
+  it('renders the photo gallery with images, supports filtering, and opens the lightbox modal', () => {
+    render(<App />);
+
+    // Verify Gallery header and moments badge
+    expect(screen.getByText(/EVENT PHOTO GALLERY/i)).toBeInTheDocument();
+    expect(screen.getByText(/92 Moments Captured/i)).toBeInTheDocument();
+
+    // Verify category filter buttons exist
+    const performanceFilter = screen.getByRole('button', { name: /Live Performances/i });
+    expect(performanceFilter).toBeInTheDocument();
+    fireEvent.click(performanceFilter);
+
+    // Verify clicking a photo opens the Lightbox
+    const firstPhoto = screen.getByLabelText(/^View Voices of Valor Live Event & Writers Round - Photo 1$/i);
+    expect(firstPhoto).toBeInTheDocument();
+    fireEvent.click(firstPhoto);
+
+    // Verify Lightbox is displayed with Close button and photo counter
+    expect(screen.getByLabelText(/Close photo preview/i)).toBeInTheDocument();
+    expect(screen.getByText(/Use ← → keys to browse/i)).toBeInTheDocument();
+  });
 });

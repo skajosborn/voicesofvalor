@@ -6,6 +6,7 @@ import { MemorialHeader } from './components/MemorialHeader';
 import { VeteranCard } from './components/VeteranCard';
 import { VeteranDetail } from './components/VeteranDetail';
 import { SupportBanner } from './components/SupportBanner';
+import { PhotoGallery } from './components/PhotoGallery';
 import { ParchmentFooter } from './components/ParchmentFooter';
 import { globalAudioEngine } from './services/audioEngine';
 import { Shield } from 'lucide-react';
@@ -56,9 +57,9 @@ export const App: React.FC = () => {
         vet.name.toLowerCase().includes(q) ||
         vet.rank.toLowerCase().includes(q) ||
         vet.branch.toLowerCase().includes(q) ||
+        vet.serviceEra.toLowerCase().includes(q) ||
         vet.song.title.toLowerCase().includes(q) ||
         vet.song.genre.toLowerCase().includes(q) ||
-        vet.hometown.toLowerCase().includes(q) ||
         vet.lyrics.some((sec) => sec.lines.some((l) => l.text.toLowerCase().includes(q)));
 
       return matchesBranch && matchesQuery;
@@ -78,10 +79,36 @@ export const App: React.FC = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const handleNavigateSection = (sectionId: string) => {
+    if (sectionId === 'gallery' || sectionId === 'events') {
+      if (selectedVeteranId) {
+        setSelectedVeteranId(null);
+        window.location.hash = '';
+      }
+      setTimeout(() => {
+        const el = document.getElementById('photo-gallery-section');
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 50);
+    } else if (sectionId === 'veterans') {
+      if (selectedVeteranId) {
+        setSelectedVeteranId(null);
+        window.location.hash = '';
+      }
+      setTimeout(() => {
+        const el = document.getElementById('meet-veterans-section');
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 50);
+    }
+  };
+
   return (
     <div className="min-h-screen vov-hero-bg flex flex-col text-slate-100">
       {/* Top Navigation Bar with authentic VOICES OF VALOR branding */}
-      <Navbar onHomeClick={handleBackToRoster} />
+      <Navbar onHomeClick={handleBackToRoster} onNavigateSection={handleNavigateSection} />
 
       {/* Main Content Area */}
       <div className="flex-1">
@@ -137,6 +164,9 @@ export const App: React.FC = () => {
 
             {/* Support Callout Banner */}
             <SupportBanner />
+
+            {/* Event Photo Gallery */}
+            <PhotoGallery />
           </main>
         )}
       </div>
