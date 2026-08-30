@@ -135,8 +135,9 @@ describe('Voices of Valor Memorial Application', () => {
     const mobileAbout = aboutButtons[aboutButtons.length - 1];
     fireEvent.click(mobileAbout);
 
-    // Verify dialog opens
+    // Verify dialog opens and displays Johnny & Heidi photo
     expect(screen.getByText(/About Voices of Valor/i)).toBeInTheDocument();
+    expect(screen.getByAltText(/Johnny and Heidi Bulford/i)).toBeInTheDocument();
   });
 
   it('renders the photo gallery with images, supports filtering, and opens the lightbox modal', () => {

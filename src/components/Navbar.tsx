@@ -218,7 +218,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onHomeClick, onNavigateSection }
       <Dialog.Root open={!!activeModal} onOpenChange={(open) => !open && setActiveModal(null)}>
         <Dialog.Portal>
           <Dialog.Overlay className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 animate-fade-in" />
-          <Dialog.Content className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] max-w-lg bg-[#0f1926] p-6 sm:p-8 rounded-2xl border border-amber-400/30 shadow-2xl z-50 focus:outline-none">
+          <Dialog.Content className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] max-w-lg max-h-[88vh] overflow-y-auto bg-[#0f1926] p-6 sm:p-8 rounded-2xl border border-amber-400/30 shadow-2xl z-50 focus:outline-none">
             <div className="flex items-center justify-between pb-3 mb-4 border-b border-white/10">
               <Dialog.Title className="text-xl font-headline font-bold uppercase tracking-wider text-white">
                 {activeModal === 'about' && 'About Voices of Valor'}
@@ -241,6 +241,23 @@ export const Navbar: React.FC<NavbarProps> = ({ onHomeClick, onNavigateSection }
               <div className="text-sm text-slate-300 leading-relaxed space-y-4 font-sans">
                 {activeModal === 'about' && (
                   <>
+                    <div className="relative overflow-hidden rounded-xl border border-amber-400/30 shadow-xl bg-black/50 group">
+                      <img
+                        src="/assets/Johnny & Heidi.png"
+                        alt="Johnny and Heidi Bulford"
+                        className="w-full max-h-60 sm:max-h-72 object-cover object-top filter brightness-95 group-hover:brightness-100 transition-all duration-300"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#0c1522] via-transparent to-transparent opacity-90" />
+                      <div className="absolute bottom-2.5 left-3.5 right-3.5 flex items-center justify-between text-xs font-mono">
+                        <span className="font-headline font-bold uppercase tracking-wider text-white drop-shadow">
+                          Johnny & Heidi Bulford
+                        </span>
+                        <span className="text-amber-300 font-medium drop-shadow text-[11px]">
+                          Nashville Songwriters
+                        </span>
+                      </div>
+                    </div>
+
                     <p>
                       <strong>Voices of Valor</strong> is a live music storytelling series presented by{' '}
                       <span className="text-amber-300 font-semibold">Combat Veterans to Careers</span> and{' '}
