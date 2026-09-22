@@ -7,27 +7,39 @@ import { VeteranCard } from './components/VeteranCard';
 import { VeteranDetail } from './components/VeteranDetail';
 import { SupportBanner } from './components/SupportBanner';
 import { PhotoGallery } from './components/PhotoGallery';
+import { MilitaryRadioPlaylist } from './components/MilitaryRadioPlaylist';
 import { ParchmentFooter } from './components/ParchmentFooter';
 import { globalAudioEngine } from './services/audioEngine';
 import { Shield } from 'lucide-react';
 
+type AppView = 'home' | 'playlist' | 'detail';
+
 export const App: React.FC = () => {
   const [selectedVeteranId, setSelectedVeteranId] = useState<string | null>(null);
+  const [showPlaylist, setShowPlaylist] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedBranch, setSelectedBranch] = useState('All');
 
-  // Handle URL hash routing (e.g. #john-bircher-iii)
+  // Handle URL hash routing (e.g. #john-bircher-iii or #playlist)
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash.replace('#', '');
+      if (hash === 'playlist' || hash === 'radio') {
+        setSelectedVeteranId(null);
+        setShowPlaylist(true);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
+      }
       if (hash) {
         const found = VETERANS_DATA.find((v) => v.id === hash);
         if (found) {
+          setShowPlaylist(false);
           setSelectedVeteranId(found.id);
           window.scrollTo({ top: 0, behavior: 'smooth' });
           return;
         }
       }
+      setShowPlaylist(false);
       setSelectedVeteranId(null);
     };
 
@@ -40,6 +52,8 @@ export const App: React.FC = () => {
     if (!selectedVeteranId) return null;
     return VETERANS_DATA.find((v) => v.id === selectedVeteranId) || null;
   }, [selectedVeteranId]);
+
+  const view: AppView = showPlaylist ? 'playlist' : selectedVeteran ? 'detail' : 'home';
 
   // Unique branches for filter bar
   const branches = useMemo(() => {
@@ -67,6 +81,7 @@ export const App: React.FC = () => {
   }, [searchQuery, selectedBranch]);
 
   const handleSelectVeteran = (vet: Veteran) => {
+    setShowPlaylist(false);
     setSelectedVeteranId(vet.id);
     window.location.hash = vet.id;
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -74,15 +89,29 @@ export const App: React.FC = () => {
 
   const handleBackToRoster = () => {
     globalAudioEngine.stop();
+    setShowPlaylist(false);
     setSelectedVeteranId(null);
     window.location.hash = '';
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const handleOpenPlaylist = () => {
+    globalAudioEngine.stop();
+    setSelectedVeteranId(null);
+    setShowPlaylist(true);
+    window.location.hash = 'playlist';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const handleNavigateSection = (sectionId: string) => {
+    if (sectionId === 'playlist' || sectionId === 'radio') {
+      handleOpenPlaylist();
+      return;
+    }
     if (sectionId === 'gallery' || sectionId === 'events') {
-      if (selectedVeteranId) {
+      if (selectedVeteranId || showPlaylist) {
         setSelectedVeteranId(null);
+        setShowPlaylist(false);
         window.location.hash = '';
       }
       setTimeout(() => {
@@ -92,8 +121,9 @@ export const App: React.FC = () => {
         }
       }, 50);
     } else if (sectionId === 'veterans') {
-      if (selectedVeteranId) {
+      if (selectedVeteranId || showPlaylist) {
         setSelectedVeteranId(null);
+        setShowPlaylist(false);
         window.location.hash = '';
       }
       setTimeout(() => {
@@ -112,7 +142,9 @@ export const App: React.FC = () => {
 
       {/* Main Content Area */}
       <div className="flex-1">
-        {selectedVeteran ? (
+        {view === 'playlist' ? (
+          <MilitaryRadioPlaylist onBack={handleBackToRoster} />
+        ) : view === 'detail' && selectedVeteran ? (
           <VeteranDetail
             veteran={selectedVeteran}
             allVeterans={VETERANS_DATA}
@@ -130,7 +162,7 @@ export const App: React.FC = () => {
               branches={branches}
             />
 
-            {/* Meet Our Veterans Grid (2 rows of 3 = 6 veterans) */}
+            {/* Meet Our Veterans Grid */}
             {filteredVeterans.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7 mt-6">
                 {filteredVeterans.map((veteran) => (

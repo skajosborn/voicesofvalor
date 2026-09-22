@@ -39,6 +39,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onHomeClick, onNavigateSection }
           setActiveModal(target);
         }
       }
+    } else if (target === 'playlist' || target === 'radio') {
+      if (onNavigateSection) {
+        onNavigateSection('playlist');
+      }
     }
   };
 
@@ -89,6 +93,15 @@ export const Navbar: React.FC<NavbarProps> = ({ onHomeClick, onNavigateSection }
             className="hover:text-amber-300 transition-colors"
           >
             VETERANS
+          </button>
+
+          <span className="text-slate-600 text-[10px]">★</span>
+
+          <button
+            onClick={() => handleNav('radio')}
+            className="hover:text-amber-300 transition-colors"
+          >
+            RADIO
           </button>
 
           <span className="text-slate-600 text-[10px]">★</span>
@@ -176,6 +189,14 @@ export const Navbar: React.FC<NavbarProps> = ({ onHomeClick, onNavigateSection }
               className="flex items-center justify-between px-3 py-2.5 rounded-lg hover:text-amber-300 hover:bg-white/5 transition-colors text-left"
             >
               <span>VETERANS</span>
+              <span className="text-slate-600 text-xs">★</span>
+            </button>
+
+            <button
+              onClick={() => handleNav('radio')}
+              className="flex items-center justify-between px-3 py-2.5 rounded-lg hover:text-amber-300 hover:bg-white/5 transition-colors text-left"
+            >
+              <span>RADIO</span>
               <span className="text-slate-600 text-xs">★</span>
             </button>
 

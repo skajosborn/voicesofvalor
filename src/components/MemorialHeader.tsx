@@ -25,19 +25,57 @@ export const MemorialHeader: React.FC<MemorialHeaderProps> = ({
 
   return (
     <div className="relative">
-      {/* Hero Banner Section using high-resolution newVVhero image */}
-      <section className="relative w-full overflow-hidden bg-[#0a1017]">
-        <div className="max-w-7xl mx-auto px-2 sm:px-4 pt-2 sm:pt-4">
-          <div className="relative w-full rounded-2xl overflow-hidden shadow-2xl border border-white/10">
-            <img
-              src="/assets/newVVhero.png"
-              alt="Voices of Valor - Live Music Writers Round Honoring All Veterans featuring Johnny & Heidi Bulford"
-              className="w-full h-auto object-contain block"
-            />
+      {/* Text Hero — mission & hope */}
+      <section className="relative w-full overflow-hidden" aria-labelledby="vov-hero-heading">
+        <div className="vov-mission-hero max-w-5xl mx-auto mt-2 sm:mt-4 px-5 sm:px-10 py-10 sm:py-14 rounded-2xl border border-white/10 shadow-2xl">
+          <div className="relative z-10 text-center max-w-3xl mx-auto">
+            <p className="font-headline text-[11px] sm:text-xs tracking-[0.28em] uppercase text-amber-300/90 mb-3">
+              Presented by Combat Veterans to Careers
+            </p>
+
+            <h1
+              id="vov-hero-heading"
+              className="font-headline font-bold text-4xl sm:text-5xl md:text-6xl tracking-[0.08em] uppercase text-white drop-shadow-lg"
+            >
+              Voices of Valor
+            </h1>
+
+            <div className="flex items-center justify-center gap-3 my-4">
+              <span className="h-px w-10 sm:w-16 bg-gradient-to-r from-transparent to-vov-redBright" />
+              <span className="text-vov-redBright text-xs">★ ★ ★</span>
+              <span className="h-px w-10 sm:w-16 bg-gradient-to-l from-transparent to-vov-redBright" />
+            </div>
+
+            <p className="vov-script-italic text-lg sm:text-xl text-amber-100/95 mb-6 leading-snug">
+              Stories told through song. Healing that lasts a lifetime.
+            </p>
+
+            <div className="space-y-4 text-sm sm:text-[15px] text-slate-200/95 font-sans leading-relaxed text-left sm:text-center">
+              <p>
+                Voices of Valor is our gift to those who have served—an invitation to tell their story
+                through song. So many veterans carry what they have seen and sacrificed in silence.
+                This program opens a door: a chance to put those experiences into music, to release
+                what has been held close, and to find a measure of healing along the way.
+              </p>
+              <p>
+                Through collaboration with Nashville songwriters Johnny and Heidi Bulford, each veteran creates something
+                lasting—a keepsake of courage and truth that families can pass down through the
+                generations, and a window that lets the rest of us understand a little more of what
+                it was like to walk in their boots.
+              </p>
+              <p className="text-slate-300/95">
+                Every day, an estimated{' '}
+                <span className="text-amber-200 font-semibold">56 veterans attempt suicide</span>, and{' '}
+                <span className="text-amber-200 font-semibold">27 lose that fight</span>. That number
+                is far too high. Programs like Voices of Valor offer something vital in return:
+                hope, healing, and the steady support our veterans need to keep going—one song,
+                one story, one day at a time.
+              </p>
+            </div>
           </div>
         </div>
 
-        {/* CTA Bar right below the banner */}
+        {/* CTA Bar right below the mission statement */}
         <div className="flex flex-col items-center justify-center pt-6 pb-2">
           <button
             onClick={handleScrollToVeterans}

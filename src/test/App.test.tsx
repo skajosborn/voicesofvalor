@@ -11,7 +11,9 @@ describe('Voices of Valor Memorial Application', () => {
   it('renders the memorial header banner and all veteran picture cards on initial load', () => {
     render(<App />);
 
-    expect(screen.getByAltText(/Voices of Valor - Live Music Writers Round/i)).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 1, name: /Voices of Valor/i })).toBeInTheDocument();
+    expect(screen.getByText(/Stories told through song/i)).toBeInTheDocument();
+    expect(screen.getByText(/56 veterans attempt suicide/i)).toBeInTheDocument();
     expect(screen.getAllByText(/MEET OUR VETERANS/i)[0]).toBeInTheDocument();
     expect(screen.getAllByText(/LIVE MUSIC/i)[0]).toBeInTheDocument();
     expect(screen.getByText(/VETERAN STORIES/i)).toBeInTheDocument();
@@ -38,9 +40,10 @@ describe('Voices of Valor Memorial Application', () => {
     const steveCard = screen.getByLabelText(/View song card and story for 1st Sergeant Steve Large/i);
     fireEvent.click(steveCard);
 
-    expect(screen.getByText('Monster In a Cage')).toBeInTheDocument();
+    expect(screen.getAllByText('Monster In a Cage')[0]).toBeInTheDocument();
     expect(screen.getByAltText(/Song Card for Steve Large - Monster In a Cage/i)).toBeInTheDocument();
     expect(screen.getByText(/Written by Steve Large, David Booth, Johnny Bulford, Heidi Bulford/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/Pause song|Play song/i)).toBeInTheDocument();
   });
 
   it('filters veterans when searching by name or branch', () => {
@@ -160,6 +163,65 @@ describe('Voices of Valor Memorial Application', () => {
     // Verify Lightbox is displayed with Close button and photo counter
     expect(screen.getByLabelText(/Close photo preview/i)).toBeInTheDocument();
     expect(screen.getByText(/Use ← → keys to browse/i)).toBeInTheDocument();
+  });
+
+  it('renders new veteran pages for Brad Hobbs, Chris Vasatka, and Deb Bodenstedt with MP3s', () => {
+    render(<App />);
+
+    expect(screen.getByText('Brad Hobbs')).toBeInTheDocument();
+    expect(screen.getByText('Chris Vasatka')).toBeInTheDocument();
+    expect(screen.getByText('Deb Bodenstedt')).toBeInTheDocument();
+
+    const bradCard = screen.getByLabelText(/View song card and story for Sergeant Brad Hobbs/i);
+    fireEvent.click(bradCard);
+    expect(screen.getAllByText(/Like You Ain't Got a Prayer/i)[0]).toBeInTheDocument();
+    expect(screen.getByAltText(/Song Card for Brad Hobbs/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/Pause song|Play song/i)).toBeInTheDocument();
+
+    fireEvent.click(screen.getByLabelText(/Back to all veterans/i));
+
+    const chrisCard = screen.getByLabelText(/View song card and story for Command Sergeant Major Chris Vasatka/i);
+    fireEvent.click(chrisCard);
+    expect(screen.getAllByText(/Fine On the Outside/i)[0]).toBeInTheDocument();
+    expect(screen.getByLabelText(/Pause song|Play song/i)).toBeInTheDocument();
+
+    fireEvent.click(screen.getByLabelText(/Back to all veterans/i));
+
+    const debCard = screen.getByLabelText(/View song card and story for Captain Deb Bodenstedt/i);
+    fireEvent.click(debCard);
+    expect(screen.getAllByText(/Win Another Day/i)[0]).toBeInTheDocument();
+    expect(screen.getByLabelText(/Pause song|Play song/i)).toBeInTheDocument();
+  });
+
+  it('wires newly added MP3s for Irving Locker and Louis Nicosia', () => {
+    render(<App />);
+
+    const irvingCard = screen.getByLabelText(/View song card and story for Staff Sergeant Irving Locker/i);
+    fireEvent.click(irvingCard);
+    expect(screen.getAllByText(/If Freedom Was Free/i)[0]).toBeInTheDocument();
+    expect(screen.getByLabelText(/Pause song|Play song/i)).toBeInTheDocument();
+
+    fireEvent.click(screen.getByLabelText(/Back to all veterans/i));
+
+    const louCard = screen.getByLabelText(/View song card and story for Sergeant Louis Nicosia/i);
+    fireEvent.click(louCard);
+    expect(screen.getAllByText(/Tug of War/i)[0]).toBeInTheDocument();
+    expect(screen.getByLabelText(/Pause song|Play song/i)).toBeInTheDocument();
+  });
+
+  it('opens the military radio playlist page with shuffle controls for all available songs', () => {
+    render(<App />);
+
+    const radioBtn = screen.getAllByRole('button', { name: /RADIO/i })[0];
+    fireEvent.click(radioBtn);
+
+    expect(screen.getByRole('heading', { name: /Field Radio/i })).toBeInTheDocument();
+    expect(screen.getByLabelText(/Shuffle playlist/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/Play shuffled playlist|Pause radio/i)).toBeInTheDocument();
+
+    // At least one known MP3 track should appear in the channel list
+    expect(screen.getByText(/What's Next/i)).toBeInTheDocument();
+    expect(screen.getByText(/David Booth/i)).toBeInTheDocument();
   });
 
   it('opens the contact dialog and includes all branches of the military', () => {

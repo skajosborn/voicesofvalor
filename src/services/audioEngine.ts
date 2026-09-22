@@ -8,6 +8,7 @@ export class AudioEngine {
   private playbackTime = 0;
   private duration = 180;
   private onTimeUpdate?: (time: number, isPlaying: boolean) => void;
+  private onEnded?: () => void;
   
   // HTML5 Audio element for MP3 files
   private audioElement: HTMLAudioElement | null = null;
@@ -22,6 +23,10 @@ export class AudioEngine {
 
   public setTimeUpdateCallback(cb: (time: number, isPlaying: boolean) => void) {
     this.onTimeUpdate = cb;
+  }
+
+  public setEndedCallback(cb: (() => void) | null) {
+    this.onEnded = cb || undefined;
   }
 
   public loadAndPlay(track: SongTrackData, autoPlay = true) {
@@ -73,6 +78,9 @@ export class AudioEngine {
         this.isPlaying = false;
         if (this.onTimeUpdate) {
           this.onTimeUpdate(0, false);
+        }
+        if (this.onEnded) {
+          this.onEnded();
         }
       }
     });
