@@ -59,15 +59,16 @@ describe('Voices of Valor Memorial Application', () => {
   it('clicking a veteran picture card with an MP3 navigates to their song card page with audio player', () => {
     render(<App />);
 
-    // Click David Booth card (has Whats Next.mp3)
+    // Click David Booth card — What's Next is the featured song
     const davidCard = screen.getByLabelText(/View song card and story for Master Sergeant David Booth/i);
     fireEvent.click(davidCard);
 
-    // Should now show the detail view
-    expect(screen.getAllByText("What's Next")[0]).toBeInTheDocument();
+    expect(screen.getAllByText(/What's Next/i).length).toBeGreaterThan(0);
     expect(screen.getByText(/Official Song Card/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/Other songs by David/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/Play Smells Like Freedom/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/Play Everybody's Hero/i)).toBeInTheDocument();
 
-    // Verify Audio Player controls exist for veterans with coordinating MP3
     const playPauseBtn = screen.getByLabelText(/Pause song|Play song/i);
     expect(playPauseBtn).toBeInTheDocument();
   });
@@ -193,7 +194,7 @@ describe('Voices of Valor Memorial Application', () => {
     expect(screen.getByLabelText(/Pause song|Play song/i)).toBeInTheDocument();
   });
 
-  it('wires newly added MP3s for Irving Locker and Louis Nicosia', () => {
+  it('wires newly added MP3s for Irving Locker, Louis Nicosia, Kris Hasenauer, Len Erickson, and Mandy Espinal', () => {
     render(<App />);
 
     const irvingCard = screen.getByLabelText(/View song card and story for Staff Sergeant Irving Locker/i);
@@ -206,6 +207,27 @@ describe('Voices of Valor Memorial Application', () => {
     const louCard = screen.getByLabelText(/View song card and story for Sergeant Louis Nicosia/i);
     fireEvent.click(louCard);
     expect(screen.getAllByText(/Tug of War/i)[0]).toBeInTheDocument();
+    expect(screen.getByLabelText(/Pause song|Play song/i)).toBeInTheDocument();
+
+    fireEvent.click(screen.getByLabelText(/Back to all veterans/i));
+
+    const krisCard = screen.getByLabelText(/View song card and story for Major Kris Hasenauer/i);
+    fireEvent.click(krisCard);
+    expect(screen.getAllByText(/If I Was Ready As You Were/i)[0]).toBeInTheDocument();
+    expect(screen.getByLabelText(/Pause song|Play song/i)).toBeInTheDocument();
+
+    fireEvent.click(screen.getByLabelText(/Back to all veterans/i));
+
+    const lenCard = screen.getByLabelText(/View song card and story for Sergeant Len Erickson/i);
+    fireEvent.click(lenCard);
+    expect(screen.getAllByText(/Willy's Song/i)[0]).toBeInTheDocument();
+    expect(screen.getByLabelText(/Pause song|Play song/i)).toBeInTheDocument();
+
+    fireEvent.click(screen.getByLabelText(/Back to all veterans/i));
+
+    const mandyCard = screen.getByLabelText(/View song card and story for Sergeant Mandy Espinal/i);
+    fireEvent.click(mandyCard);
+    expect(screen.getAllByText(/Have Courage and Be Kind/i)[0]).toBeInTheDocument();
     expect(screen.getByLabelText(/Pause song|Play song/i)).toBeInTheDocument();
   });
 
@@ -220,8 +242,8 @@ describe('Voices of Valor Memorial Application', () => {
     expect(screen.getByLabelText(/Play shuffled playlist|Pause radio/i)).toBeInTheDocument();
 
     // At least one known MP3 track should appear in the channel list
-    expect(screen.getByText(/What's Next/i)).toBeInTheDocument();
-    expect(screen.getByText(/David Booth/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/Everybody's Hero/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/David Booth/i).length).toBeGreaterThan(0);
   });
 
   it('opens the contact dialog and includes all branches of the military', () => {

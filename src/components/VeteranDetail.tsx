@@ -1,6 +1,6 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { ArrowLeft, Award, Calendar, Shield, ChevronLeft, ChevronRight, Music, Image as ImageIcon, FileText } from 'lucide-react';
-import { Veteran } from '../types/veteran';
+import { SongTrackData, Veteran } from '../types/veteran';
 import { AudioPlayer } from './AudioPlayer';
 import { LyricsCard } from './LyricsCard';
 
@@ -11,14 +11,33 @@ interface VeteranDetailProps {
   onSelectVeteran: (veteran: Veteran) => void;
 }
 
+const PRIMARY_TRACK_ID = 'primary';
+
 export const VeteranDetail: React.FC<VeteranDetailProps> = ({
   veteran,
   allVeterans,
   onBack,
   onSelectVeteran,
 }) => {
+  const additionalSongs = veteran.additionalSongs ?? [];
+  const [playingTrackId, setPlayingTrackId] = useState(PRIMARY_TRACK_ID);
   const [currentTime, setCurrentTime] = useState(0);
-  const [activeTab, setActiveTab] = useState<'card' | 'lyrics'>(veteran.songcardUrl ? 'card' : 'lyrics');
+  const [activeTab, setActiveTab] = useState<'card' | 'lyrics'>(
+    veteran.songcardUrl ? 'card' : 'lyrics'
+  );
+
+  useEffect(() => {
+    setPlayingTrackId(PRIMARY_TRACK_ID);
+    setCurrentTime(0);
+    setActiveTab(veteran.songcardUrl ? 'card' : 'lyrics');
+  }, [veteran.id, veteran.songcardUrl]);
+
+  const isPlayingPrimary = playingTrackId === PRIMARY_TRACK_ID;
+  const playingSong: SongTrackData = isPlayingPrimary
+    ? veteran.song
+    : (additionalSongs.find((t) => t.id === playingTrackId)?.song ?? veteran.song);
+
+  const firstName = veteran.name.split(' ')[0];
 
   const handleTimeChange = useCallback((time: number) => {
     setCurrentTime(time);
@@ -162,18 +181,83 @@ export const VeteranDetail: React.FC<VeteranDetailProps> = ({
           </div>
         </div>
 
-        {/* Right Column: Audio Player & Visual Song Card / Lyrics */}
+        {/* Right Column: Featured song + optional additional tracks */}
         <div className="lg:col-span-7 space-y-6">
-          {/* Audio Player Card (rendered only when coordinating MP3 track is available) */}
-          {veteran.song.audioUrl && (
+          {playingSong.audioUrl && (
             <AudioPlayer
-              song={veteran.song}
+              key={`${veteran.id}-${playingTrackId}`}
+              song={playingSong}
               autoPlay={true}
-              onTimeChange={handleTimeChange}
+              onTimeChange={isPlayingPrimary ? handleTimeChange : undefined}
             />
           )}
 
-          {/* View Toggle Tabs if Songcard Graphic Exists */}
+          {!isPlayingPrimary && (
+            <button
+              type="button"
+              onClick={() => {
+                setPlayingTrackId(PRIMARY_TRACK_ID);
+                setCurrentTime(0);
+              }}
+              className="text-xs font-mono text-sky-300 hover:underline"
+            >
+              ← Back to {veteran.song.title}
+            </button>
+          )}
+
+          {additionalSongs.length > 0 && (
+            <div
+              className="rounded-2xl p-4 sm:p-5 border border-sky-500/30 bg-sky-950/40 shadow-[inset_0_1px_0_rgba(125,211,252,0.08)]"
+              aria-label={`Other songs by ${firstName}`}
+            >
+              <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-sky-300/90 mb-3">
+                Other songs by {firstName}
+              </p>
+              <ul className="flex flex-col gap-2">
+                {additionalSongs.map((track) => {
+                  const isPlaying = playingTrackId === track.id;
+                  return (
+                    <li key={track.id}>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setPlayingTrackId(track.id);
+                          setCurrentTime(0);
+                        }}
+                        className={`w-full text-left px-3 py-2.5 rounded-xl border transition-all ${
+                          isPlaying
+                            ? 'bg-sky-800/70 border-sky-400/50 text-white shadow-md'
+                            : 'bg-sky-950/50 border-sky-700/40 text-sky-100/90 hover:border-sky-400/50 hover:bg-sky-900/50 hover:text-white'
+                        }`}
+                        aria-pressed={isPlaying}
+                        aria-label={`Play ${track.song.title}`}
+                      >
+                        <span className="flex items-center gap-3">
+                          <Music
+                            className={`w-3.5 h-3.5 shrink-0 ${isPlaying ? 'text-sky-300' : 'text-sky-500'}`}
+                          />
+                          <span className="min-w-0 flex-1">
+                            <span className="block text-xs sm:text-sm font-headline font-bold uppercase tracking-wider">
+                              {track.song.title}
+                            </span>
+                            <span className="block text-[10px] font-mono text-sky-300/60 truncate mt-0.5">
+                              {track.song.composer}
+                            </span>
+                          </span>
+                          {isPlaying && (
+                            <span className="text-[9px] font-mono uppercase tracking-widest text-sky-300 shrink-0">
+                              Playing
+                            </span>
+                          )}
+                        </span>
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          )}
+
           {veteran.songcardUrl && (
             <div className="flex items-center gap-2 bg-slate-900/80 p-1.5 rounded-xl border border-slate-700 max-w-sm">
               <button
@@ -201,7 +285,6 @@ export const VeteranDetail: React.FC<VeteranDetailProps> = ({
             </div>
           )}
 
-          {/* Visual Song Card or Interactive Lyrics Display */}
           {activeTab === 'card' && veteran.songcardUrl ? (
             <div className="vov-card rounded-2xl p-4 sm:p-6 border border-slate-700 shadow-2xl relative overflow-hidden text-center">
               <div className="mb-4 flex items-center justify-between pb-3 border-b border-slate-800">
@@ -218,7 +301,6 @@ export const VeteranDetail: React.FC<VeteranDetailProps> = ({
                 </span>
               </div>
 
-              {/* High Res Songcard PNG Display */}
               <div className="rounded-xl overflow-hidden bg-black/60 border border-slate-800 shadow-inner flex items-center justify-center">
                 <img
                   src={veteran.songcardUrl}
@@ -240,7 +322,7 @@ export const VeteranDetail: React.FC<VeteranDetailProps> = ({
           ) : (
             <LyricsCard
               lyrics={veteran.lyrics}
-              currentTime={currentTime}
+              currentTime={isPlayingPrimary ? currentTime : 0}
               songTitle={veteran.song.title}
               veteranName={veteran.name}
             />

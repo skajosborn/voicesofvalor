@@ -13,7 +13,7 @@ export const VETERANS_DATA: Veteran[] = [
     imageAlt: 'Veteran David Booth in front of American Flag',
     songcardUrl: '/assets/songcards/DAVID BOOTH.png',
     shortQuote: '“Ranking up, moving on, climb the ladder of success... live one day at a time and do what’s best.”',
-    story: 'Master Sergeant David Booth served in combat operations during Operation Iraqi Freedom. Partnering with Nashville songwriters Clay Jensen, Brian White, and Craig Campbell through CreatiVets, he turned his experiences and journey of resilience into his hit anthem “What’s Next.”',
+    story: 'Master Sergeant David Booth served in combat operations during Operation Iraqi Freedom. Partnering with Nashville songwriters Clay Jensen, Brian White, and Craig Campbell through CreatiVets, he turned his experiences and journey of resilience into his hit anthem “What’s Next.” He has also written “Smells Like Freedom” and “Everybody’s Hero.”',
     medals: ['Army Commendation Medal with Valor', 'Purple Heart', 'Global War on Terrorism Expeditionary Medal'],
     song: {
       title: "What's Next",
@@ -43,7 +43,7 @@ export const VETERANS_DATA: Veteran[] = [
         lines: [
           { id: 'db-6', timeSec: 22, text: 'That day in Iraq was the day I found' },
           { id: 'db-7', timeSec: 27, text: 'Sometimes things change' },
-          { id: 'db-8', timeSec: 31, text: 'Yeah and I\'ll confess I asked myself' },
+          { id: 'db-8', timeSec: 31, text: "Yeah and I'll confess I asked myself" },
           { id: 'db-9', timeSec: 36, text: "What's next" },
         ],
       },
@@ -95,6 +95,38 @@ export const VETERANS_DATA: Veteran[] = [
           { id: 'db-32', timeSec: 158, text: "Yeah that's what's next" },
           { id: 'db-33', timeSec: 164, text: "Yeah that's what's next" },
         ],
+      },
+    ],
+    additionalSongs: [
+      {
+        id: 'smells-like-freedom',
+        song: {
+          title: 'Smells Like Freedom',
+          composer: 'David Booth',
+          durationSec: 210,
+          genre: 'Country Rock / Heartland Americana',
+          tempoBpm: 80,
+          scaleRoot: 'A',
+          scaleType: 'major',
+          synthStyle: 'acoustic-guitar',
+          audioUrl: '/assets/songs/smells-like-freedom.mp3',
+          chordProgression: ['A', 'D', 'E', 'F#m'],
+        },
+      },
+      {
+        id: 'everybody-hero',
+        song: {
+          title: "Everybody's Hero",
+          composer: 'David Booth',
+          durationSec: 202,
+          genre: 'Country Rock / Heartland Americana',
+          tempoBpm: 78,
+          scaleRoot: 'G',
+          scaleType: 'major',
+          synthStyle: 'acoustic-guitar',
+          audioUrl: "/assets/songs/Everybody's Hero.mp3",
+          chordProgression: ['G', 'C', 'D', 'Em'],
+        },
       },
     ],
   },
@@ -626,6 +658,7 @@ export const VETERANS_DATA: Veteran[] = [
       scaleRoot: 'C',
       scaleType: 'major',
       synthStyle: 'piano-elegy',
+      audioUrl: '/assets/songs/If I Was Ready As You Were by CreatiVets.mp3',
       chordProgression: ['C', 'G', 'Am', 'F'],
     },
     lyrics: [
@@ -1066,6 +1099,7 @@ export const VETERANS_DATA: Veteran[] = [
       scaleRoot: 'D',
       scaleType: 'minor',
       synthStyle: 'acoustic-guitar',
+      audioUrl: "/assets/songs/Willy's Song.mp3",
       chordProgression: ['Dm', 'Bb', 'F', 'C'],
     },
     lyrics: [
@@ -1153,6 +1187,7 @@ export const VETERANS_DATA: Veteran[] = [
       scaleRoot: 'C',
       scaleType: 'major',
       synthStyle: 'piano-elegy',
+      audioUrl: '/assets/songs/Have Courage and Be Kind.mp3',
       chordProgression: ['C', 'G', 'Am', 'F'],
     },
     lyrics: [

@@ -23,6 +23,14 @@ export interface SongTrackData {
   chordProgression: string[];
 }
 
+/** Extra playable tracks beyond the veteran's featured main song. */
+export interface VeteranSongEntry {
+  id: string;
+  song: SongTrackData;
+  lyrics?: LyricSection[];
+  songcardUrl?: string;
+}
+
 export interface Veteran {
   id: string;
   name: string;
@@ -36,7 +44,21 @@ export interface Veteran {
   songcardUrl?: string;
   shortQuote: string;
   story: string;
+  /** Featured main track (roster cards, song card, interactive lyrics, autoplay). */
   song: SongTrackData;
   lyrics: LyricSection[];
+  /** Optional additional songs by this veteran (shown as secondary tracks). */
+  additionalSongs?: VeteranSongEntry[];
   medals?: string[];
+}
+
+/** All playable tracks for radio / playlists: main song first, then additional. */
+export function getVeteranSongs(veteran: Veteran): VeteranSongEntry[] {
+  const primary: VeteranSongEntry = {
+    id: `${veteran.id}-primary`,
+    song: veteran.song,
+    lyrics: veteran.lyrics,
+    songcardUrl: veteran.songcardUrl,
+  };
+  return [primary, ...(veteran.additionalSongs ?? [])];
 }

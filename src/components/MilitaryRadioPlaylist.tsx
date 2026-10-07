@@ -10,7 +10,7 @@ import {
   VolumeX,
 } from 'lucide-react';
 import { VETERANS_DATA } from '../data/veterans';
-import { SongTrackData, Veteran } from '../types/veteran';
+import { SongTrackData, Veteran, getVeteranSongs } from '../types/veteran';
 import { globalAudioEngine } from '../services/audioEngine';
 
 export interface PlaylistTrack {
@@ -44,14 +44,21 @@ interface MilitaryRadioPlaylistProps {
 
 export const MilitaryRadioPlaylist: React.FC<MilitaryRadioPlaylistProps> = ({ onBack }) => {
   const tracks = useMemo<PlaylistTrack[]>(() => {
-    return VETERANS_DATA.filter((v) => Boolean(v.song.audioUrl)).map((v) => ({
-      veteranId: v.id,
-      veteranName: v.name,
-      rank: v.rank,
-      branch: v.branch,
-      imageUrl: v.imageUrl,
-      song: v.song,
-    }));
+    const list: PlaylistTrack[] = [];
+    for (const v of VETERANS_DATA) {
+      for (const entry of getVeteranSongs(v)) {
+        if (!entry.song.audioUrl) continue;
+        list.push({
+          veteranId: `${v.id}:${entry.id}`,
+          veteranName: v.name,
+          rank: v.rank,
+          branch: v.branch,
+          imageUrl: v.imageUrl,
+          song: entry.song,
+        });
+      }
+    }
+    return list;
   }, []);
 
   const [queue, setQueue] = useState<PlaylistTrack[]>(() => shuffleArray(tracks));
